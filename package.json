@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "watch": "jest --watch",
     "build": "webpack"
   },
   "keywords": [],
@@ -11,7 +12,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@babel/core": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
     "@eslint/js": "^9.0.0",
+    "babel-jest": "^29.7.0",
     "css-loader": "^7.1.1",
     "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.1.0",
