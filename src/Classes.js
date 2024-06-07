@@ -45,6 +45,7 @@ class Gameboard {
         this.rows = 7;
         this.columns = 8;
         this.board = this.generateBoard();
+        this.ships = [];
     }
 
     generateBoard() {
@@ -60,20 +61,47 @@ class Gameboard {
 
     placeShip(ship, orientation, x, y) {
         if (orientation === "vertical") {
-            if (y + ship.length > this.rows) {
-                return false
+            if (x + ship.length > this.rows) {
+                return false;
             }
             for (let i = 0; i < ship.length; i++) {
+                if (this.board[y + i][x].ship) {
+                    return false;
+                }
                 this.board[y + i][x].placeShip(ship);
             }
-        }
-        if (orientation === "horizontal") {
-            if (x + ship.length > this.columns) {
+        } else if (orientation === "horizontal") {
+            if (y + ship.length > this.columns) {
                 return false;
             }
             for (let j = 0; j < ship.length; j++) {
+                if (this.board[y][x + j].ship) {
+                    return false;
+                }
                 this.board[y][x + j].placeShip(ship);
             }
         }
+        this.ships.push(ship);
+        return true;
+    }
+
+    receiveAttack(x, y) {
+        if (this.board[y][x]) {
+            if (this.board[y][x] && this.board[y][x].hit) {
+                return false;
+            }
+            this.board[y][x].attack();
+            return true;
+        } 
+        return false;
+    }
+
+    allShipsSunk() {
+        for (let i = 0; i < this.ships.length; i++) {
+            if (this.ships[i].isSunk() === false) {
+                return false;
+            }
+        }
+        return true;
     }
 }
