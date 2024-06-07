@@ -1,6 +1,7 @@
 export { Ship,
     Cell,
-    Gameboard
+    Gameboard,
+    Player
  }
 
 class Ship {
@@ -103,5 +104,16 @@ class Gameboard {
             }
         }
         return true;
+    }
+}
+
+class Player {
+    constructor(type) {
+        this.type = type; //Human or computer
+        this.gameBoard = new Gameboard();
+    }
+
+    typeOfPlayer() {
+        return this.type;
     }
 }
