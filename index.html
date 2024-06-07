@@ -11,16 +11,21 @@
             <label for="player1">Player One Name:</label>
             <input type="text" id="player1" name="player1" required>
     
+            <button type="button" id="toggleComputerSwitch">Toggle Computer</button>
             <label for="player2">Player Two Name:</label>
             <input type="text" id="player2" name="player2" required>
     
             <button type="button" id="startButton">Start Game</button>
         </form>
       </div>
-      <div class="player1Board"></div>
-      <div class="player2Board"></div>
+      <div class="player1Board">
+        <div id="player1GridContainer"></div>
+      </div>
+      <div class="player2Board">
+        <div id="player2GridContainer"></div>
+      </div>
       <button type="button" id="restartButton">Restart</button>
   </div>
-    <script src="bundle.js"></script>
+    <script src="bundle.js" defer></script>
   </body>
 </html>
