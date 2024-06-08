@@ -43,7 +43,7 @@ class Cell {
 
 class Gameboard {
     constructor() {
-        this.rows = 7;
+        this.rows = 8;
         this.columns = 8;
         this.board = this.generateBoard();
         this.ships = [];
@@ -61,8 +61,8 @@ class Gameboard {
     }
 
     placeShip(ship, orientation, x, y) {
-        if (orientation === "vertical") {
-            if (x + ship.length > this.rows) {
+        if (orientation === "horizontal") {
+            if (x + ship.length > this.columns) {
                 return false;
             }
             for (let i = 0; i < ship.length; i++) {
@@ -71,8 +71,8 @@ class Gameboard {
                 }
                 this.board[y + i][x].placeShip(ship);
             }
-        } else if (orientation === "horizontal") {
-            if (y + ship.length > this.columns) {
+        } else if (orientation === "vertical") {
+            if (y + ship.length > this.rows) {
                 return false;
             }
             for (let j = 0; j < ship.length; j++) {
