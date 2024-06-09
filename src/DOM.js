@@ -1,6 +1,7 @@
 export {
     toggleComputer,
-    createGrid
+    createGrid,
+    toggleShipVisibility
 }
 
 let currentPlayer = "player1";
@@ -20,6 +21,7 @@ function createGrid(player, containerID, playerPrefix) {
         for (let j = 0; j < playersGameBoard.columns; j++) {
             const button = document.createElement("button");
             button.id = `${playerPrefix}-id${i}${j}`;
+            button.classList.add(playerPrefix);
 
             const cell = playersGameBoard.board[j][i];
 
@@ -30,9 +32,10 @@ function createGrid(player, containerID, playerPrefix) {
             //console.log(cell);
             
             button.addEventListener("click",() => {
-
                 console.log(`Attempting to access Cell [${i}][${j}]`);
                 console.log(cell);
+
+                if (document.getElement(".Player"))
 
                 if (cell.hit) {
                     console.log("Already hit");
@@ -57,8 +60,8 @@ function createGrid(player, containerID, playerPrefix) {
                     }
                 }
 
-                switchTurn();
                 //Manage player turn
+                switchTurn();
                 if (currentPlayer === "player1") {
                     switchPlayersTurnDOM(currentPlayer);
                     console.log(`It is ${currentPlayer}'s (your turn) turn`);
@@ -68,10 +71,26 @@ function createGrid(player, containerID, playerPrefix) {
                 } else {
                     console.log("No player found")
                 }
+
+                toggleShipVisibility();
             })
 
             containerID.appendChild(button);
         }
+    }
+}
+
+function toggleShipVisibility() {
+    const player1Buttons = document.querySelectorAll(".Player1.ship");
+    const player2Buttons = document.querySelectorAll(".Player2.ship");
+    console.log("toggleshipvisibility", player1Buttons);
+
+    if (currentPlayer === "player1") {
+        player2Buttons.forEach(button => button.classList.add("hide-ship"));
+        player1Buttons.forEach(button => button.classList.remove("hide-ship"));
+    } else {
+        player1Buttons.forEach(button => button.classList.add("hide-ship"));
+        player2Buttons.forEach(button => button.classList.remove("hide-ship"));
     }
 }
 

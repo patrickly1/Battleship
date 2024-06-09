@@ -20,23 +20,29 @@
     font-size: 16px; /* Set the font size of the button text */
     margin: 0; /* Remove default margins */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    background-color: lightgrey;
 }
 
 /* Define styles for hit cells */
 .hit {
-    background-color: red; /* Change background color to red */
+    background-color: red !important; /* Change background color to red */
 }
 
 /* Define styles for cells containing ships */
 .ship {
-    background-color: blue; /* Change background color to blue */
+    background-color: blue !important; /* Change background color to blue */
+}
+
+/* Class to hide ship locations */
+.hide-ship {
+    background-color: lightgrey !important; /* Reset background color to initial */
 }
 
 /* Define styles for hit cells containing ships */
 .hit-ship {
-    background-color: green; /* Change background color to green */
+    background-color: green !important; /* Change background color to green */
 }
 
 .sunk {
-    background-color: grey; /* Change background color to green */
+    background-color: grey !important; /* Change background color to green */
 }
