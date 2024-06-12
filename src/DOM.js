@@ -1,8 +1,14 @@
 export {
     toggleComputer,
     createGrid,
-    toggleShipVisibility
+    toggleShipVisibility,
+    disableButtons,
+    updateGridAfterShipPlacement
 }
+
+import{
+    getCellCoordinates
+} from "./index"
 
 let currentPlayer = "player1";
 let toggleOpponent = "player2";
@@ -34,8 +40,6 @@ function createGrid(player, containerID, playerPrefix) {
             button.addEventListener("click",() => {
                 console.log(`Attempting to access Cell [${i}][${j}]`);
                 console.log(cell);
-
-                if (document.getElement(".Player"))
 
                 if (cell.hit) {
                     console.log("Already hit");
@@ -73,6 +77,7 @@ function createGrid(player, containerID, playerPrefix) {
                 }
 
                 toggleShipVisibility();
+                disableButtons();
             })
 
             containerID.appendChild(button);
@@ -80,10 +85,24 @@ function createGrid(player, containerID, playerPrefix) {
     }
 }
 
+function disableButtons() {
+    const player1Buttons = document.querySelectorAll(".Player1");
+    const player2Buttons = document.querySelectorAll(".Player2");
+    //console.log("disable buttons", player1Buttons)
+
+    if (currentPlayer === "player1") {
+        player2Buttons.forEach(button => button.disabled = false);
+        player1Buttons.forEach(button => button.disabled = true);
+    } else {
+        player1Buttons.forEach(button => button.disabled = false);
+        player2Buttons.forEach(button => button.disabled = true);
+    }
+}
+
 function toggleShipVisibility() {
     const player1Buttons = document.querySelectorAll(".Player1.ship");
     const player2Buttons = document.querySelectorAll(".Player2.ship");
-    console.log("toggleshipvisibility", player1Buttons);
+    //console.log("toggleshipvisibility", player1Buttons);
 
     if (currentPlayer === "player1") {
         player2Buttons.forEach(button => button.classList.add("hide-ship"));
@@ -98,6 +117,8 @@ function gameOverDOM(currentPlayer) {
     const gameOverDiv = document.getElementById("gameOver");
 
     const gameOverElement = document.createElement("div");
+    //In the event users continue playing, reset game over statement
+    gameOverElement.innerHTML = "";
     gameOverElement.innerHTML = `Game over! ${currentPlayer} has won the game.`
 
     gameOverDiv.appendChild(gameOverElement);
@@ -129,4 +150,19 @@ function updateSunkShipClass(player, sunkShip, playerPrefix) {
             }
         }
     }
+}
+
+function updateGridAfterShipPlacement(player, gridContainer) {
+    const gameBoard = player.gameBoard;
+    console.log(gridContainer, "gridContainer");
+    const cells = gridContainer.querySelectorAll("button");
+
+    cells.forEach(cell => {
+        const [x, y] = getCellCoordinates(cell.id);
+        const currentCell = gameBoard.board[y][x];
+
+        if (currentCell.ship) {
+            cell.classList.add("ship");
+        }
+    });
 }

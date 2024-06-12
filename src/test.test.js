@@ -70,13 +70,13 @@ it("Placing the ship correctly onto cells horizontally", () => {
 it("Ship placed out of bounds vertically", () => {
     let newGameBoard = new Gameboard();
     let newShip = new Ship(3);
-    expect(newGameBoard.placeShip(newShip, "vertical", 0, 6)).toBeFalsy();
+    expect(newGameBoard.placeShip(newShip, "vertical", 6, 0)).toBeFalsy();
 })
 
 it("Ship placed out of bounds horizontally", () => {
     let newGameBoard = new Gameboard();
     let newShip = new Ship(3);
-    expect(newGameBoard.placeShip(newShip, "horizontal", 6, 0)).toBeFalsy();
+    expect(newGameBoard.placeShip(newShip, "horizontal", 0, 6)).toBeFalsy();
 })
 
 it("Ship placed in bounds vertically", () => {

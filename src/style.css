@@ -23,6 +23,21 @@
     background-color: lightgrey;
 }
 
+.ship {
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    background-color: blue;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    cursor: grab;
+}
+
+.ship.dragging {
+    opacity: 0.5;
+}
+
 /* Define styles for hit cells */
 .hit {
     background-color: red !important; /* Change background color to red */

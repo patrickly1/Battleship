@@ -61,25 +61,25 @@ class Gameboard {
     }
 
     placeShip(ship, orientation, x, y) {
-        if (orientation === "horizontal") {
+        if (orientation === "vertical") {
             if (x + ship.length > this.columns) {
                 return false;
             }
             for (let i = 0; i < ship.length; i++) {
-                if (this.board[y + i][x].ship) {
+                if (this.board[y][x + i].ship) {
                     return false;
                 }
-                this.board[y + i][x].placeShip(ship);
+                this.board[y][x + i].placeShip(ship);
             }
-        } else if (orientation === "vertical") {
+        } else if (orientation === "horizontal") {
             if (y + ship.length > this.rows) {
                 return false;
             }
             for (let j = 0; j < ship.length; j++) {
-                if (this.board[y][x + j].ship) {
+                if (this.board[y + j][x].ship) {
                     return false;
                 }
-                this.board[y][x + j].placeShip(ship);
+                this.board[y + j][x].placeShip(ship);
             }
         }
         this.ships.push(ship);
