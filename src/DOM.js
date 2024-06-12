@@ -3,7 +3,8 @@ export {
     createGrid,
     toggleShipVisibility,
     disableButtons,
-    updateGridAfterShipPlacement
+    updateGridAfterShipPlacement,
+    toggleShipOrientation
 }
 
 import{
@@ -12,6 +13,27 @@ import{
 
 let currentPlayer = "player1";
 let toggleOpponent = "player2";
+let toggleCurrentOrientation = "horizontal";
+
+function toggleShipOrientation()  {
+    document.getElementById('toggleShipOrientationSwitch').addEventListener("click", function() {
+        toggleCurrentOrientation = toggleCurrentOrientation === "horizontal" ? "vertical" : "horizontal";
+        console.log(toggleCurrentOrientation);
+    })
+
+    const allShips = document.querySelectorAll(".ship");
+    console.log(allShips);
+
+    if (toggleCurrentOrientation === "horizontal") {
+        allShips.forEach(ship => ship.classList.add("horizontal"));
+        allShips.forEach(ship => ship.classList.remove("vertical"));
+    } else if (toggleCurrentOrientation === "vertical") {
+        allShips.forEach(ship => ship.classList.add("vertical"));
+        allShips.forEach(ship => ship.classList.remove("horizontal"));
+    }
+    
+    return toggleCurrentOrientation;
+}
 
 function toggleComputer() {
     document.getElementById('toggleComputerSwitch').addEventListener('click', function() {
@@ -62,22 +84,23 @@ function createGrid(player, containerID, playerPrefix) {
                         gameOverDOM(currentPlayer);
                         console.log(player, "game over");
                     }
+
+                    //Manage player turn
+                    switchTurn();
+                    if (currentPlayer === "player1") {
+                        switchPlayersTurnDOM(currentPlayer);
+                        console.log(`It is ${currentPlayer}'s (your turn) turn`);
+                    } else if (currentPlayer === toggleOpponent) {
+                        switchPlayersTurnDOM(currentPlayer);
+                        console.log(`It is ${currentPlayer}'s turn`)
+                    } else {
+                        console.log("No player found")
+                    }
+    
+                    toggleShipVisibility();
+                    disableButtons();
                 }
 
-                //Manage player turn
-                switchTurn();
-                if (currentPlayer === "player1") {
-                    switchPlayersTurnDOM(currentPlayer);
-                    console.log(`It is ${currentPlayer}'s (your turn) turn`);
-                } else if (currentPlayer === "player2") {
-                    switchPlayersTurnDOM(currentPlayer);
-                    console.log(`It is ${currentPlayer}'s turn`)
-                } else {
-                    console.log("No player found")
-                }
-
-                toggleShipVisibility();
-                disableButtons();
             })
 
             containerID.appendChild(button);

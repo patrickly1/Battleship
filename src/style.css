@@ -34,6 +34,56 @@
     cursor: grab;
 }
 
+.ship1.horizontal {
+    width: 100px;
+    height: 50px
+}
+
+.ship2.horizontal {
+    width: 150px;
+    height: 50px
+}
+
+.ship3.horizontal {
+    width: 150px;
+    height: 50px
+}
+
+.ship4.horizontal {
+    width: 200px;
+    height: 50px
+}
+
+.ship5.horizontal {
+    width: 250px;
+    height: 50px
+}
+
+.ship1.vertical {
+    width: 50px;
+    height: 100px
+}
+
+.ship2.vertical {
+    width: 50px;
+    height: 150px
+}
+
+.ship3.vertical {
+    width: 50px;
+    height: 150px
+}
+
+.ship4.vertical {
+    width: 50px;
+    height: 200px
+}
+
+.ship5.vertical {
+    width: 50px;
+    height: 250px
+}
+
 .ship.dragging {
     opacity: 0.5;
 }

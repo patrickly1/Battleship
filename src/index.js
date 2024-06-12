@@ -11,12 +11,17 @@ import {
     createGrid,
     toggleShipVisibility,
     disableButtons,
-    updateGridAfterShipPlacement
+    updateGridAfterShipPlacement,
+    toggleShipOrientation
 } from "./DOM"
 
 export {
     getCellCoordinates
 }
+
+let currentPlayer = "player1";
+let toggleOpponent = "player2";
+let toggleCurrentOrientation = "horizontal";
 
 document.addEventListener("DOMContentLoaded", () => {
     const player1 = new Player("player");
@@ -24,9 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log("Start at player1");
     const player2 = new Player(toggleComputer());
     
-    const player1GridContainer = document.getElementById("player1GridContainer")
-    const player2GridContainer = document.getElementById("player2GridContainer")
-    
+    const player1GridContainer = document.getElementById("player1GridContainer");
+    const player2GridContainer = document.getElementById("player2GridContainer")    
+
     let ship1 = new Ship(3);
     player1.gameBoard.placeShip(ship1, "horizontal", 0, 0);
     
@@ -64,6 +69,25 @@ document.addEventListener("DOMContentLoaded", () => {
     //and disable current player's grid
     toggleShipVisibility();
     disableButtons();
+
+    // Set up ship orientation toggle button
+    document.getElementById('toggleShipOrientationSwitch').addEventListener("click", function() {
+        toggleCurrentOrientation = toggleCurrentOrientation === "horizontal" ? "vertical" : "horizontal";
+        console.log(toggleCurrentOrientation);
+        
+        const allShips = document.querySelectorAll(".ship");
+        if (toggleCurrentOrientation === "horizontal") {
+            allShips.forEach(ship => {
+                ship.classList.add("horizontal");
+                ship.classList.remove("vertical");
+            });
+        } else if (toggleCurrentOrientation === "vertical") {
+            allShips.forEach(ship => {
+                ship.classList.add("vertical");
+                ship.classList.remove("horizontal");
+            });
+        }
+    });
 })
 
 function getCellCoordinates(cellId) {
@@ -85,7 +109,7 @@ function setupDragAndDrop(player, gridContainer, ships) {
             console.log(shipIndex);
             draggedShip = ships[shipIndex];
             console.log(ships);
-            console.log(`Dragging ship: ${draggedShip}`)// with length: ${draggedShip.length}`)
+            console.log(`Dragging ship: ${draggedShip}`)
             setTimeout(() => shipElement.classList.add("dragging"), 0);
         });
 
@@ -107,10 +131,11 @@ function setupDragAndDrop(player, gridContainer, ships) {
             const [x, y] = getCellCoordinates(cell.id);
 
             if (draggedShip) {
-                if (player.gameBoard.placeShip(draggedShip, "horizontal", x, y)) {
+                console.log("TESTING", toggleCurrentOrientation);
+                if (player.gameBoard.placeShip(draggedShip, toggleCurrentOrientation, x, y)) {
                     console.log(`${draggedShip} is being placed at ${x} ${y}`);
     
-                    player.gameBoard.placeShip(draggedShip, "horizontal", x, y)
+                    player.gameBoard.placeShip(draggedShip, toggleCurrentOrientation, x, y)
                     draggedShipElement.remove();
 
                     //update DOM
