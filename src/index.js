@@ -15,28 +15,35 @@ import {
     toggleShipOrientation
 } from "./DOM"
 
+import {
+    placeComputerShips
+} from "./Computer"
+
 export {
-    getCellCoordinates
+    getCellCoordinates,
+    player2
 }
 
 let currentPlayer = "player1";
 let toggleOpponent = "player2";
 let toggleCurrentOrientation = "horizontal";
 
+const player1 = new Player("player");
+//toggleComputer currently set to player
+console.log("Start at player1");
+
+let player2 = new Player(toggleOpponent);
+console.log("player2 type initially", player2.type);
+
 document.addEventListener("DOMContentLoaded", () => {
-    const player1 = new Player("player");
-    //togglleComputer currently set to player
-    console.log("Start at player1");
-    const player2 = new Player(toggleComputer());
-    
     const player1GridContainer = document.getElementById("player1GridContainer");
-    const player2GridContainer = document.getElementById("player2GridContainer")    
+    const player2GridContainer = document.getElementById("player2GridContainer");    
 
     let ship1 = new Ship(3);
     player1.gameBoard.placeShip(ship1, "horizontal", 0, 0);
     
-    let ship2 = new Ship(5);
-    player2.gameBoard.placeShip(ship2, "vertical", 3, 2);
+    //let ship2 = new Ship(5);
+    //player2.gameBoard.placeShip(ship2, "vertical", 3, 2);
 
     //create player ships
     const player1Ship1 = new Ship(2);
@@ -53,23 +60,52 @@ document.addEventListener("DOMContentLoaded", () => {
         player1Ship5
     ]
 
-    // Assigning ship instances to their respective HTML elements
+    //Assigning ship instances to their respective HTML elements
     document.querySelectorAll("#player1Ships .ship").forEach((element, index) => {
         element.dataset.shipIndex = index;
     });
     
-    //create Grid
-    createGrid(player1, player1GridContainer, "Player1");
-    createGrid(player2, player2GridContainer, "Player2");
+    //Toggle button to switch between "player2" and "computer"
+    document.getElementById('toggleComputerSwitch').addEventListener("click", function() {
+        toggleOpponent = toggleOpponent === "player2" ? "computer" : "player2";
+        console.log(toggleOpponent);
+        player2 = new Player(toggleOpponent);  // Reinitialize player2 based on the new toggle state
+    });
 
-    //Allow player to add ships
-    setupDragAndDrop(player1, player1GridContainer, player1Ships);
+    document.getElementById("startButton").addEventListener("click", function () {
+        //Prevent clicking start game multiple times to populate new game
+        if (document.getElementById("player1GridContainer").innerHTML !== "") {
+            return;
+        }
+
+        // Reinitialize player2 based on the current value of toggleOpponent
+        player2 = new Player(toggleOpponent);
+        console.log("player2 type initially", player2.type);
+
+        
+        
+        //create Grid
+        createGrid(player1, player1GridContainer, "Player1");
+        console.log("player2type", player2.type);
+        
+        //Check if we user is versing another player or computer
+        if (player2.type === "player2"){
+            createGrid(player2, player2GridContainer, "Player2");
+        } else if (player2.type === "computer") {
+            createGrid(player2, player2GridContainer, "Computer");
+            console.log("Placing computer ships");
+            placeComputerShips();
+        }
+        
+        //Allow player to add ships
+        setupDragAndDrop(player1, player1GridContainer, player1Ships);
+        
+        //Initially start the game off with opponent's ships toggled off
+        //and disable current player's grid
+        toggleShipVisibility();
+        disableButtons();
+    })
     
-    //Initially start the game off with opponent's ships toggled off
-    //and disable current player's grid
-    toggleShipVisibility();
-    disableButtons();
-
     // Set up ship orientation toggle button
     document.getElementById('toggleShipOrientationSwitch').addEventListener("click", function() {
         toggleCurrentOrientation = toggleCurrentOrientation === "horizontal" ? "vertical" : "horizontal";

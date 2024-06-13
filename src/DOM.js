@@ -111,14 +111,17 @@ function createGrid(player, containerID, playerPrefix) {
 function disableButtons() {
     const player1Buttons = document.querySelectorAll(".Player1");
     const player2Buttons = document.querySelectorAll(".Player2");
+    const computerButtons = document.querySelectorAll(".Computer");
     //console.log("disable buttons", player1Buttons)
 
     if (currentPlayer === "player1") {
         player2Buttons.forEach(button => button.disabled = false);
+        computerButtons.forEach(button => button.disabled = false);
         player1Buttons.forEach(button => button.disabled = true);
     } else {
         player1Buttons.forEach(button => button.disabled = false);
         player2Buttons.forEach(button => button.disabled = true);
+        computerButtons.forEach(button => button.disabled = true);
     }
 }
 
