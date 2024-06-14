@@ -32,8 +32,8 @@ const player1 = new Player("player");
 //toggleComputer currently set to player
 console.log("Start at player1");
 
-let player2 = new Player(toggleOpponent);
-console.log("player2 type initially", player2.type);
+let player2;// = new Player(toggleOpponent);
+//console.log("player2 type initially", player2.type);
 
 document.addEventListener("DOMContentLoaded", () => {
     const player1GridContainer = document.getElementById("player1GridContainer");
@@ -46,18 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
     //player2.gameBoard.placeShip(ship2, "vertical", 3, 2);
 
     //create player ships
-    const player1Ship1 = new Ship(2);
-    const player1Ship2 = new Ship(3);
-    const player1Ship3 = new Ship(3);
-    const player1Ship4 = new Ship(4);
-    const player1Ship5 = new Ship(5);
-
     const player1Ships = [
-        player1Ship1,
-        player1Ship2,
-        player1Ship3,
-        player1Ship4,
-        player1Ship5
+        new Ship(2),
+        new Ship(3),
+        new Ship(3),
+        new Ship(4),
+        new Ship(5)
     ]
 
     //Assigning ship instances to their respective HTML elements
@@ -68,8 +62,9 @@ document.addEventListener("DOMContentLoaded", () => {
     //Toggle button to switch between "player2" and "computer"
     document.getElementById('toggleComputerSwitch').addEventListener("click", function() {
         toggleOpponent = toggleOpponent === "player2" ? "computer" : "player2";
-        console.log(toggleOpponent);
+        console.log(toggleOpponent, "toggleComputerSwitch");
         player2 = new Player(toggleOpponent);  // Reinitialize player2 based on the new toggle state
+        console.log(player2.type, "player2.type");
     });
 
     document.getElementById("startButton").addEventListener("click", function () {
@@ -81,12 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Reinitialize player2 based on the current value of toggleOpponent
         player2 = new Player(toggleOpponent);
         console.log("player2 type initially", player2.type);
+        console.log("toggleOpponent", toggleOpponent);
 
-        
-        
         //create Grid
         createGrid(player1, player1GridContainer, "Player1");
-        console.log("player2type", player2.type);
         
         //Check if we user is versing another player or computer
         if (player2.type === "player2"){

@@ -12,18 +12,12 @@ export {
     placeComputerShips
 }
 
-const computerShip1 = new Ship(2);
-const computerShip2 = new Ship(3);
-const computerShip3 = new Ship(3);
-const computerShip4 = new Ship(4);
-const computerShip5 = new Ship(5);
-
 const computerShips = [
-    computerShip1,
-    computerShip2,
-    computerShip3,
-    computerShip4,
-    computerShip5
+    new Ship(2),
+    new Ship(3),
+    new Ship(3),
+    new Ship(4),
+    new Ship(5)
 ]
 
 function getRandomIntegerInclusive(min, max) {
@@ -39,13 +33,11 @@ function getRandomShipOrientation() {
 }
 
 function placeComputerShips() {
-    console.log("test1");
     computerShips.forEach(ship => {
         const computerShipOrientation = getRandomShipOrientation();
 
         let placed = false;
         while (!placed) {
-            console.log("test2");
             let x, y;
             if (computerShipOrientation === "horizontal") {
                 x = getRandomIntegerInclusive(0, 7 - ship.length - 1);

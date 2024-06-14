@@ -11,6 +11,7 @@ import{
     getCellCoordinates
 } from "./index"
 
+
 let currentPlayer = "player1";
 let toggleOpponent = "player2";
 let toggleCurrentOrientation = "horizontal";
@@ -39,6 +40,8 @@ function toggleComputer() {
     document.getElementById('toggleComputerSwitch').addEventListener('click', function() {
         toggleOpponent = toggleOpponent === "player2" ? "computer" : "player2";
         console.log(toggleOpponent);
+        player2 = new Player(toggleOpponent);
+        console.log(player2.type, "player2.type");
     });
     return toggleOpponent;
 }
@@ -87,20 +90,20 @@ function createGrid(player, containerID, playerPrefix) {
 
                     //Manage player turn
                     switchTurn();
-                    if (currentPlayer === "player1") {
-                        switchPlayersTurnDOM(currentPlayer);
-                        console.log(`It is ${currentPlayer}'s (your turn) turn`);
-                    } else if (currentPlayer === toggleOpponent) {
-                        switchPlayersTurnDOM(currentPlayer);
-                        console.log(`It is ${currentPlayer}'s turn`)
-                    } else {
-                        console.log("No player found")
-                    }
+                    switchPlayersTurnDOM(player.type);
+                    //if (currentPlayer === "player1") {
+                    //    switchPlayersTurnDOM(currentPlayer);
+                    //    console.log(`It is ${currentPlayer}'s (your turn) turn`);
+                    //} else if (currentPlayer === toggleOpponent) {
+                    //    switchPlayersTurnDOM(currentPlayer);
+                    //    console.log(`It is ${currentPlayer}'s turn`)
+                    //} else {
+                    //    console.log("No player found")
+                    //}
     
                     toggleShipVisibility();
                     disableButtons();
                 }
-
             })
 
             containerID.appendChild(button);
@@ -144,7 +147,7 @@ function gameOverDOM(currentPlayer) {
 
     const gameOverElement = document.createElement("div");
     //In the event users continue playing, reset game over statement
-    gameOverElement.innerHTML = "";
+    gameOverDiv.innerHTML = "";
     gameOverElement.innerHTML = `Game over! ${currentPlayer} has won the game.`
 
     gameOverDiv.appendChild(gameOverElement);
