@@ -48,13 +48,13 @@ function placeComputerShips() {
         while (!placed) {
             let x, y;
             if (computerShipOrientation === "horizontal") {
-                x = getRandomIntegerInclusive(0, 7 - ship.length - 1);
+                x = getRandomIntegerInclusive(0, 7 - ship.length);
             } else {
                 x = getRandomIntegerInclusive(0, 7);
             }
 
             if (computerShipOrientation === "vertical") {
-                y = getRandomIntegerInclusive(0, 7 - ship.length - 1);
+                y = getRandomIntegerInclusive(0, 7 - ship.length);
             } else {
                 y = getRandomIntegerInclusive(0, 7);
             }

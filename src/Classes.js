@@ -62,23 +62,37 @@ class Gameboard {
 
     placeShip(ship, orientation, x, y) {
         if (orientation === "vertical") {
+            //Check if ship out of bounds vertically
             if (x + ship.length > this.columns) {
                 return false;
             }
+
+            //Check for overlap
             for (let i = 0; i < ship.length; i++) {
-                if (this.board[y][x + i].ship) {
+                if (y >= this.rows || x + i >= this.columns || this.board[y][x + i].ship) {
                     return false;
                 }
-                this.board[y][x + i].placeShip(ship);
             }
+
+            //Place ship if no overlap and in bounds
+            for (let i = 0; i < ship.length; i++) {
+                this.board[y][x + i].placeShip(ship);
+            }    
         } else if (orientation === "horizontal") {
+            //Check if ship out of bounds horizontally
             if (y + ship.length > this.rows) {
                 return false;
             }
+
+            //Check for overlap
             for (let j = 0; j < ship.length; j++) {
-                if (this.board[y + j][x].ship) {
+                if (y + j >= this.rows || x >= this.columns || this.board[y + j][x].ship) {
                     return false;
                 }
+            }
+            
+            //Place ship if no overlap and in bounds
+            for (let j = 0; j < ship.length; j++){
                 this.board[y + j][x].placeShip(ship);
             }
         }

@@ -172,3 +172,11 @@ it("All ships have sunk", () => {
     console.log(newShip2.isSunk());
     expect(newGameBoard.allShipsSunk()).not.toBeFalsy();
 })
+
+it("Check if overlapping ships can be placed", () => {
+    let newGameBoard = new Gameboard();
+    let newShip = new Ship(3);
+    let newShip2 = new Ship(4); 
+    newGameBoard.placeShip(newShip, "vertical", 0, 1);
+    expect(newGameBoard.placeShip(newShip2, "horizontal", 1, 0)).toBeFalsy();
+})
