@@ -21,6 +21,7 @@ import {
 
 export {
     getCellCoordinates,
+    player1,
     player2
 }
 

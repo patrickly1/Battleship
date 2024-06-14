@@ -4,12 +4,18 @@ export {
     toggleShipVisibility,
     disableButtons,
     updateGridAfterShipPlacement,
-    toggleShipOrientation
+    toggleShipOrientation,
+    updateSunkShipClass,
+    gameOverDOM
 }
 
-import{
+import {
     getCellCoordinates
 } from "./index"
+
+import {
+    computerTurntoAttack
+} from "./Computer"
 
 
 let currentPlayer = "player1";
@@ -100,6 +106,16 @@ function createGrid(player, containerID, playerPrefix) {
                     //} else {
                     //    console.log("No player found")
                     //}
+
+                    if (player.type === "computer") {
+                        setTimeout(() => { 
+                            computerTurntoAttack();
+                            switchTurn();
+                            switchPlayersTurnDOM(player.type);
+                            toggleShipVisibility();
+                            disableButtons();
+                        }, 500) // Computer attacks after short delay
+                    }
     
                     toggleShipVisibility();
                     disableButtons();

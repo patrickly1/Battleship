@@ -5,10 +5,18 @@ import { Ship,
 } from "./Classes";
 
 import {
+    getCellCoordinates,
+    player1,
     player2
 } from "./index"
 
+import {
+    updateSunkShipClass,
+    gameOverDOM
+} from "./DOM"
+
 export {
+    computerTurntoAttack,
     placeComputerShips
 }
 
@@ -57,17 +65,41 @@ function placeComputerShips() {
     });
 }
 
-function clickRandomButtonOnPlayerGrid() {
-    const x = getRandomIntegerInclusive(0, 7);
-    const y = getRandomIntegerInclusive(0, 7);
+function computerTurntoAttack() {
+    const player1GridContainer = document.getElementById("player1GridContainer");
+    const validCells = [];
 
-    const cellId = `player1-id${x}${y}`;
+    //Valid non-attacked cells
+    const cells = player1GridContainer.querySelectorAll("button");
+    cells.forEach(cell => {
+        if (!cell.classList.contains("hit")) {
+            validCells.push(cell);
+        }
+    })
 
-    const button = document.getElementById(cellId);
+    if (validCells.length === 0) {
+        console.log("No valid cells left for computer to attack");
+    }
 
-    if (button) {
-        button.click();
-    } else {
-        console.log(`Button with ID${cellId} not found`);
+    //Randomly select a cell to attack
+    const randomIndex = Math.floor(Math.random() * validCells.length);
+    const cell = validCells[randomIndex];
+    const [x, y] = getCellCoordinates(cell.id);
+
+    player1.gameBoard.receiveAttack(x, y);
+    cell.classList.add("hit");
+
+    const attackedCell = player1.gameBoard.board[y][x];
+    if (attackedCell.ship) {
+        cell.classList.add("hit-ship");
+        if (attackedCell.ship.isSunk()) {
+            updateSunkShipClass(player1, attackedCell.ship, "Player1");
+        }
+    } 
+
+    //Check win condition
+    if (player1.gameBoard.allShipsSunk()) {
+        gameOverDOM("computer");
+        console.log("computer", "game over");
     }
 }
