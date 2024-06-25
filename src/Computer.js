@@ -68,6 +68,7 @@ function placeComputerShips() {
 function computerTurntoAttack() {
     const player1GridContainer = document.getElementById("player1GridContainer");
     const validCells = [];
+    let lastSuccessfulHit = null;
 
     //Valid non-attacked cells
     const cells = player1GridContainer.querySelectorAll("button");
@@ -80,11 +81,18 @@ function computerTurntoAttack() {
     if (validCells.length === 0) {
         console.log("No valid cells left for computer to attack");
     }
-
-    //Randomly select a cell to attack
-    const randomIndex = Math.floor(Math.random() * validCells.length);
-    const cell = validCells[randomIndex];
-    const [x, y] = getCellCoordinates(cell.id);
+    
+    let cell, x, y;
+    
+    //If last hit was successful, hit adjacent cells
+    if (lastSuccessfulHit) {
+        //code to target adjacent cells here
+    } else {
+        //Randomly select a cell to attack
+        const randomIndex = Math.floor(Math.random() * validCells.length);
+        cell = validCells[randomIndex];
+        [x, y] = getCellCoordinates(cell.id);      
+    }
 
     player1.gameBoard.receiveAttack(x, y);
     cell.classList.add("hit");
@@ -92,6 +100,7 @@ function computerTurntoAttack() {
     const attackedCell = player1.gameBoard.board[y][x];
     if (attackedCell.ship) {
         cell.classList.add("hit-ship");
+        let lastSuccessfulHit = [x, y];
         if (attackedCell.ship.isSunk()) {
             updateSunkShipClass(player1, attackedCell.ship, "Player1");
         }

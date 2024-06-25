@@ -97,15 +97,6 @@ function createGrid(player, containerID, playerPrefix) {
                     //Manage player turn
                     switchTurn();
                     switchPlayersTurnDOM(player.type);
-                    //if (currentPlayer === "player1") {
-                    //    switchPlayersTurnDOM(currentPlayer);
-                    //    console.log(`It is ${currentPlayer}'s (your turn) turn`);
-                    //} else if (currentPlayer === toggleOpponent) {
-                    //    switchPlayersTurnDOM(currentPlayer);
-                    //    console.log(`It is ${currentPlayer}'s turn`)
-                    //} else {
-                    //    console.log("No player found")
-                    //}
 
                     if (player.type === "computer") {
                         setTimeout(() => { 

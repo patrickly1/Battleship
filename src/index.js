@@ -42,9 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let ship1 = new Ship(3);
     player1.gameBoard.placeShip(ship1, "horizontal", 0, 0);
-    
-    //let ship2 = new Ship(5);
-    //player2.gameBoard.placeShip(ship2, "vertical", 3, 2);
 
     //create player ships
     const player1Ships = [
@@ -54,11 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
         new Ship(4),
         new Ship(5)
     ]
-
-    //Assigning ship instances to their respective HTML elements
-    document.querySelectorAll("#player1Ships .ship").forEach((element, index) => {
-        element.dataset.shipIndex = index;
-    });
+    
+    const player2Ships = [
+        new Ship(2),
+        new Ship(3),
+        new Ship(3),
+        new Ship(4),
+        new Ship(5)
+    ]
     
     //Toggle button to switch between "player2" and "computer"
     document.getElementById('toggleComputerSwitch').addEventListener("click", function() {
@@ -68,11 +68,28 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(player2.type, "player2.type");
     });
 
+    // Function to create and append ship elements
+    function createShipElements(containerId, ships) {
+        const shipsContainer = document.getElementById(containerId);
+        ships.forEach((ship, index) => {
+            const shipElement = document.createElement("div");
+            shipElement.className = `ship ship${index + 1} horizontal`;
+            shipElement.setAttribute("draggable", "true");
+            shipElement.setAttribute("data-length", ship.length);
+            shipElement.setAttribute("data-ship-index", index);
+            shipElement.innerText = `Ship ${index + 1} (${ship.length})`;
+            shipsContainer.appendChild(shipElement);
+        });
+    }
+    
     document.getElementById("startButton").addEventListener("click", function () {
         //Prevent clicking start game multiple times to populate new game
         if (document.getElementById("player1GridContainer").innerHTML !== "") {
             return;
         }
+        
+        //Create and append player1 ships
+        createShipElements("player1ShipsContainer", player1Ships);
 
         // Reinitialize player2 based on the current value of toggleOpponent
         player2 = new Player(toggleOpponent);
@@ -85,6 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
         //Check if we user is versing another player or computer
         if (player2.type === "player2"){
             createGrid(player2, player2GridContainer, "Player2");
+            console.log("Placing player 2's ships");
+            createShipElements("player2ShipsContainer", player2Ships);
         } else if (player2.type === "computer") {
             createGrid(player2, player2GridContainer, "Computer");
             console.log("Placing computer ships");
@@ -93,6 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
         
         //Allow player to add ships
         setupDragAndDrop(player1, player1GridContainer, player1Ships);
+        
+        if (player2.type === "player2") {
+            setupDragAndDrop(player2, player2GridContainer, player2Ships);
+        }
         
         //Initially start the game off with opponent's ships toggled off
         //and disable current player's grid
