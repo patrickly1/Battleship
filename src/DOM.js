@@ -12,7 +12,9 @@ export {
 }
 
 import {
-    getCellCoordinates
+    getCellCoordinates,
+    player1Ships,
+    player2Ships
 } from "./index"
 
 import {
@@ -116,8 +118,6 @@ function createGrid(player, containerID, playerPrefix) {
             if (cell.ship !== null) {
                 button.classList.add("ship");
             }
-            
-            //console.log(cell);
             
             button.addEventListener("click",() => {
                 console.log(`Attempting to access Cell [${i}][${j}]`);

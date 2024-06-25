@@ -35,8 +35,7 @@ const player1 = new Player("player");
 //toggleComputer currently set to player
 console.log("Start at player1");
 
-let player2;// = new Player(toggleOpponent);
-//console.log("player2 type initially", player2.type);
+let player2;
 
 document.addEventListener("DOMContentLoaded", () => {
     const player1GridContainer = document.getElementById("player1GridContainer");
@@ -93,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        //Get rid of the forms once game has started
+        //Get rid of form once game has started
         const beginGameElement = document.getElementById("beginGame");
         beginGameElement.textContent = "";
                 
@@ -195,13 +194,34 @@ function setupDragAndDrop(player, gridContainer, ships) {
             if (draggedShip) {
                 console.log("TESTING", toggleCurrentOrientation);
                 if (player.gameBoard.placeShip(draggedShip, toggleCurrentOrientation, x, y)) {
-                    console.log(`${draggedShip} is being placed at ${x} ${y}`);
+                    console.log(`${draggedShip[0]}${draggedShip[1]} is being placed at ${x} ${y}`);
     
                     player.gameBoard.placeShip(draggedShip, toggleCurrentOrientation, x, y)
+
+                    //remove ship from list
+                    const index = ships.indexOf(draggedShip);
+                    if (index > -1) {
+                        console.log("removing ship", ships[index]);
+                        console.log("index of ship", index);
+                        ships[index] = null;
+                    }
+  
+                    console.log(ships, "list of ships");
                     draggedShipElement.remove();
 
                     //update DOM
                     updateGridAfterShipPlacement(player, gridContainer);
+
+                    //check if all ships are removed
+                    let allShipsRemoved = true; //assume true, but we will check
+                    for (let i = 0; i < ships.length; i++) {
+                        if (ships[i] !== null) {
+                            allShipsRemoved = false;
+                            break
+                        } 
+                    }
+                    console.log(allShipsRemoved, "checking if ships are empty");
+
                 } else {
                     console.log("Out of bounds");
                 }

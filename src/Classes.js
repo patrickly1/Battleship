@@ -125,6 +125,7 @@ class Player {
     constructor(type) {
         this.type = type; //Human or computer
         this.gameBoard = new Gameboard();
+        this.ships = null;
     }
 
     typeOfPlayer() {
