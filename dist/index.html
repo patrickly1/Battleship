@@ -6,17 +6,22 @@
   </head>
   <body>
     <div class="container">
-      <div class="form">
-        <form id="nameForm">
-            <label for="player1">Player One Name:</label>
-            <input type="text" id="player1" name="player1" required>
-    
-            <button type="button" id="toggleComputerSwitch">Toggle Computer</button>
-            <label for="player2">Player Two Name:</label>
-            <input type="text" id="player2" name="player2" required>
-    
-            <button type="button" id="startButton">Start Game</button>
-        </form>
+      <div id="beginGame">
+        <div class="form">
+          <form id="nameForm">
+              <label for="player1">Player One Name:</label>
+              <input type="text" id="player1" name="player1" required>
+      
+              <button type="button" id="toggleComputerSwitch">Toggle Opponent</button>
+              <div id="player2Form">
+                <label for="player2">Player Two Name:</label>
+                <input type="text" id="player2" name="player2" required>              
+              </div>
+      
+              <button type="button" id="startButton">Start Game</button>
+          </form>
+        </div>
+        <div id="opponent"></div>
       </div>
       <div id="switchPlayersTurn">It is player1's turn</div>
       <div id="gameOver"></div>

@@ -6,7 +6,9 @@ export {
     updateGridAfterShipPlacement,
     toggleShipOrientation,
     updateSunkShipClass,
-    gameOverDOM
+    gameOverDOM,
+    updateOpponentDOM,
+    updatePlayer2FormDOM
 }
 
 import {
@@ -42,14 +44,63 @@ function toggleShipOrientation()  {
     return toggleCurrentOrientation;
 }
 
+//tests if this toggleComputer function works
 function toggleComputer() {
     document.getElementById('toggleComputerSwitch').addEventListener('click', function() {
         toggleOpponent = toggleOpponent === "player2" ? "computer" : "player2";
-        console.log(toggleOpponent);
+        //This line doesn't work, trouble shoot later
+        //console.log(toggleOpponent, "toggleOpponent variable");
+        //updateOpponentDOM(toggleOpponent);
+
         player2 = new Player(toggleOpponent);
         console.log(player2.type, "player2.type");
+
+        
     });
     return toggleOpponent;
+}
+
+function updateOpponentDOM(opponent) {
+    const opponentElement = document.getElementById("opponent");
+    opponentElement.innerHTML = "";
+    let extraWord, extraWord2;
+    
+    const opponentDiv = document.createElement("div");
+    if (opponent === "computer") {
+        extraWord = "the ";
+        extraWord2 = "";
+    } else {
+        extraWord = "";
+        extraWord2 = ". Please enter their name";
+    };
+    opponentDiv.innerHTML = `Your opponent will be ${extraWord}${opponent}${extraWord2}. Click start game when you are ready!`;
+
+    opponentElement.appendChild(opponentDiv);
+    console.log("function worked");
+}
+
+function updatePlayer2FormDOM(opponent) {
+    const player2FormElement = document.getElementById("player2Form");
+
+    if (opponent === "computer") {
+        //empty form
+        player2FormElement.innerHTML = "";
+    } else if (opponent === "player2") {
+        //re-add the form
+        const label = document.createElement("label");
+        label.setAttribute("for", "player2");
+        label.textContent = "Player Two Name:";
+
+        const input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.setAttribute("id", "player2");
+        input.setAttribute("name", "player2");
+        input.required = true;
+
+        player2FormElement.appendChild(label);
+        player2FormElement.appendChild(input);
+
+    }
 }
 
 function createGrid(player, containerID, playerPrefix) {

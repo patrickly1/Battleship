@@ -12,7 +12,9 @@ import {
     toggleShipVisibility,
     disableButtons,
     updateGridAfterShipPlacement,
-    toggleShipOrientation
+    toggleShipOrientation,
+    updateOpponentDOM,
+    updatePlayer2FormDOM
 } from "./DOM"
 
 import {
@@ -64,6 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('toggleComputerSwitch').addEventListener("click", function() {
         toggleOpponent = toggleOpponent === "player2" ? "computer" : "player2";
         console.log(toggleOpponent, "toggleComputerSwitch");
+        updateOpponentDOM(toggleOpponent);
+        updatePlayer2FormDOM(toggleOpponent);
+
         player2 = new Player(toggleOpponent);  // Reinitialize player2 based on the new toggle state
         console.log(player2.type, "player2.type");
     });
@@ -87,7 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.getElementById("player1GridContainer").innerHTML !== "") {
             return;
         }
-        
+
+        //Get rid of the forms once game has started
+        const beginGameElement = document.getElementById("beginGame");
+        beginGameElement.textContent = "";
+                
         //Create and append player1 ships
         createShipElements("player1ShipsContainer", player1Ships);
 
