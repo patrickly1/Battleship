@@ -65,10 +65,13 @@ function placeComputerShips() {
     });
 }
 
+let lastSuccessfulHit = false;
+let lastSuccessfulHitX = null;
+let lastSuccessfulHitY = null;
+
 function computerTurntoAttack() {
     const player1GridContainer = document.getElementById("player1GridContainer");
     const validCells = [];
-    let lastSuccessfulHit = null;
 
     //Valid non-attacked cells
     const cells = player1GridContainer.querySelectorAll("button");
@@ -83,10 +86,36 @@ function computerTurntoAttack() {
     }
     
     let cell, x, y;
+
+    function getAdjacentCells(x, y, gameBoard) {
+        const adjacentCells = [];
+        if (x > 0) {adjacentCells.push(document.getElementById(`Player1-id${x-1}${y}`))
+        if (x < gameBoard.columns - 1) {adjacentCells.push(document.getElementById(`Player1-id${x + 1}${y}`))}
+        if (y > 0) {adjacentCells.push(document.getElementById(`Player1-id${x}${y - 1}`))};
+        if (y < gameBoard.rows - 1) {adjacentCells.push(document.getElementById(`Player1-id${x}${y + 1}`))}};
+        
+        return adjacentCells;
+    }
     
     //If last hit was successful, hit adjacent cells
     if (lastSuccessfulHit) {
         //code to target adjacent cells here
+        console.log("Last hit was successful");
+        const adjacentCells = getAdjacentCells(lastSuccessfulHitX, lastSuccessfulHitY, player1.gameBoard);
+        const validAdjacentCells = adjacentCells.filter(adjCell => !adjCell.classList.contains("hit"));
+
+        if (validAdjacentCells.length > 0) {
+            console.log(validAdjacentCells, "validAdjacentCells")
+            cell = validAdjacentCells[Math.floor(Math.random() * validAdjacentCells.length)];
+            [x, y] = getCellCoordinates(cell.id);
+        } else {
+            lastSuccessfulHit = false;
+            //Fallback to random selection if no valid adjacent cells
+            const randomIndex = Math.floor(Math.random() * validCells.length);
+            cell = validCells[randomIndex];
+            [x, y] = getCellCoordinates(cell.id);  
+        }
+
     } else {
         //Randomly select a cell to attack
         const randomIndex = Math.floor(Math.random() * validCells.length);
@@ -98,14 +127,21 @@ function computerTurntoAttack() {
     cell.classList.add("hit");
 
     const attackedCell = player1.gameBoard.board[y][x];
+
+    //update last successful hit if attack was on a ship
     if (attackedCell.ship) {
         cell.classList.add("hit-ship");
-        let lastSuccessfulHit = [x, y];
+        lastSuccessfulHit = true;
+        lastSuccessfulHitX = x;
+        lastSuccessfulHitY = y;
+        
         if (attackedCell.ship.isSunk()) {
             updateSunkShipClass(player1, attackedCell.ship, "Player1");
         }
     } 
 
+    console.log(lastSuccessfulHit, "lastsuccessfulhit")
+    
     //Check win condition
     if (player1.gameBoard.allShipsSunk()) {
         gameOverDOM("computer");
