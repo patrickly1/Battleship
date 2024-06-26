@@ -14,7 +14,9 @@ import {
     updateGridAfterShipPlacement,
     toggleShipOrientation,
     updateOpponentDOM,
-    updatePlayer2FormDOM
+    updatePlayer2FormDOM,
+    switchTurn,
+    switchPlayersTurnDOM
 } from "./DOM"
 
 import {
@@ -31,7 +33,7 @@ let currentPlayer = "player1";
 let toggleOpponent = "player2";
 let toggleCurrentOrientation = "horizontal";
 
-const player1 = new Player("player");
+const player1 = new Player("player1");
 //toggleComputer currently set to player
 console.log("Start at player1");
 
@@ -41,8 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const player1GridContainer = document.getElementById("player1GridContainer");
     const player2GridContainer = document.getElementById("player2GridContainer");    
 
-    let ship1 = new Ship(3);
-    player1.gameBoard.placeShip(ship1, "horizontal", 0, 0);
+    //Sample ship
+    //let ship1 = new Ship(3);
+    //player1.gameBoard.placeShip(ship1, "horizontal", 0, 0);
 
     //create player ships
     const player1Ships = [
@@ -129,6 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
         //and disable current player's grid
         toggleShipVisibility();
         disableButtons();
+
+        //Check if all ships have been placed, then switch (if vsing another player) or
+        //start game
+        //console.log("Checking ships removed to switch turns", allShipsRemoved);
     })
     
     // Set up ship orientation toggle button
@@ -155,6 +162,8 @@ function getCellCoordinates(cellId) {
     const coords = cellId.match(/-id(\d)(\d)/);
     return [parseInt(coords[1]), parseInt(coords[2])];
 }
+
+let allShipsRemoved;
 
 function setupDragAndDrop(player, gridContainer, ships) {
     const shipElements = document.querySelectorAll(".ship");
@@ -221,6 +230,17 @@ function setupDragAndDrop(player, gridContainer, ships) {
                         } 
                     }
                     console.log(allShipsRemoved, "checking if ships are empty");
+                    
+                    //Allow players to take turns placing ships
+                    if (allShipsRemoved && toggleOpponent === "player2") {
+                        console.log("All ships removed, switching player turn...");
+                        setTimeout(() => {
+                            switchTurn();
+                            toggleShipVisibility();
+                            disableButtons();
+                        }, 1500)
+
+                    }
 
                 } else {
                     console.log("Out of bounds");

@@ -8,7 +8,9 @@ export {
     updateSunkShipClass,
     gameOverDOM,
     updateOpponentDOM,
-    updatePlayer2FormDOM
+    updatePlayer2FormDOM,
+    switchTurn,
+    switchPlayersTurnDOM
 }
 
 import {
