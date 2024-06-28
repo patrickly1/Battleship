@@ -10,7 +10,8 @@ export {
     updateOpponentDOM,
     updatePlayer2FormDOM,
     switchTurn,
-    switchPlayersTurnDOM
+    switchPlayersTurnDOM,
+    disableAllButtons
 }
 
 import {
@@ -147,10 +148,6 @@ function createGrid(player, containerID, playerPrefix) {
                         console.log(player, "game over");
                     }
 
-                    //Manage player turn
-                    switchTurn();
-                    switchPlayersTurnDOM(player.type);
-
                     if (player.type === "computer") {
                         setTimeout(() => { 
                             computerTurntoAttack();
@@ -159,10 +156,14 @@ function createGrid(player, containerID, playerPrefix) {
                             toggleShipVisibility();
                             disableButtons();
                         }, 500) // Computer attacks after short delay
+                    } else {
+                        setTimeout(() => {
+                            switchTurn();
+                            switchPlayersTurnDOM(player.type);
+                            toggleShipVisibility();
+                            disableButtons();
+                        }, 1500) //Add longer timeout if versing another player
                     }
-    
-                    toggleShipVisibility();
-                    disableButtons();
                 }
             })
 
@@ -186,6 +187,16 @@ function disableButtons() {
         player2Buttons.forEach(button => button.disabled = true);
         computerButtons.forEach(button => button.disabled = true);
     }
+}
+
+function disableAllButtons() {
+    const player1Buttons = document.querySelectorAll(".Player1");
+    const player2Buttons = document.querySelectorAll(".Player2");
+    const computerButtons = document.querySelectorAll(".Computer");
+
+    player1Buttons.forEach(button => button.disabled = true);
+    player2Buttons.forEach(button => button.disabled = true);
+    computerButtons.forEach(button => button.disabled = true);
 }
 
 function toggleShipVisibility() {

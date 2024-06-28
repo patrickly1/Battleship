@@ -16,7 +16,8 @@ import {
     updateOpponentDOM,
     updatePlayer2FormDOM,
     switchTurn,
-    switchPlayersTurnDOM
+    switchPlayersTurnDOM,
+    disableAllButtons
 } from "./DOM"
 
 import {
@@ -121,17 +122,17 @@ document.addEventListener("DOMContentLoaded", () => {
             placeComputerShips();
         }
         
+        //Initially start the game off with opponent's ships toggled off
+        //and disable current player's grid
+        toggleShipVisibility();
+        disableAllButtons();
+
         //Allow player to add ships
         setupDragAndDrop(player1, player1GridContainer, player1Ships);
         
         if (player2.type === "player2") {
             setupDragAndDrop(player2, player2GridContainer, player2Ships);
         }
-        
-        //Initially start the game off with opponent's ships toggled off
-        //and disable current player's grid
-        toggleShipVisibility();
-        disableButtons();
 
         //Check if all ships have been placed, then switch (if vsing another player) or
         //start game
@@ -237,7 +238,11 @@ function setupDragAndDrop(player, gridContainer, ships) {
                         setTimeout(() => {
                             switchTurn();
                             toggleShipVisibility();
-                            disableButtons();
+                            if (player.type === "player2") {
+                                disableButtons();
+                            } else {
+                                disableAllButtons();
+                            }
                         }, 1500)
 
                     }
