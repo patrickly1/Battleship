@@ -14,19 +14,20 @@ export {
     disableAllButtons,
     initialSwitchPlayersTurnDOM,
     updateAllShipsPlacedDOM,
-    clearAllShipsPlacedDOM
+    clearAllShipsPlacedDOM,
+    addRotateShipButton
 }
 
 import {
     getCellCoordinates,
     player1Ships,
-    player2Ships
+    player2Ships,
+    player1
 } from "./index"
 
 import {
     computerTurntoAttack
 } from "./Computer"
-
 
 let currentPlayer = "player1";
 let toggleOpponent = "player2";
@@ -97,7 +98,7 @@ function updatePlayer2FormDOM(opponent) {
         //re-add the form
         const label = document.createElement("label");
         label.setAttribute("for", "player2");
-        label.textContent = "Player Two Name:";
+        label.textContent = "Player2 Name:";
 
         const input = document.createElement("input");
         input.setAttribute("type", "text");
@@ -116,8 +117,17 @@ function createGrid(player, containerID, playerPrefix) {
     for (let i = 0; i < playersGameBoard.rows; i++){
         for (let j = 0; j < playersGameBoard.columns; j++) {
             const button = document.createElement("button");
-            button.id = `${playerPrefix}-id${i}${j}`;
-            button.classList.add(playerPrefix);
+
+            let playerUniqueCode;
+
+            if (player.type === "player1") {
+                playerUniqueCode = "Player1";
+            } else if (player.type === "player2") {
+                playerUniqueCode = "Player2";
+            } else {playerUniqueCode = "Computer"}
+
+            button.id = `${playerUniqueCode}-id${i}${j}`;
+            button.classList.add(playerUniqueCode);
 
             const cell = playersGameBoard.board[j][i];
 
@@ -152,23 +162,29 @@ function createGrid(player, containerID, playerPrefix) {
                     }
 
                     //Troubleshoot why I need this function?
-                    if (player.type ==="computer"){
+                    if (player.type === "computer" ){
                         switchTurn();
-                        switchPlayersTurnDOM(player.type);
+                    }
+                    switchPlayersTurnDOM(playerPrefix);
+
+                    console.log(playerPrefix, "playerPrefix test");
+                    
+                    if (toggleOpponent === "computer") {
+                        switchPlayersTurnDOM("computer");
                     }
 
                     if (player.type === "computer") {
                         setTimeout(() => { 
                             computerTurntoAttack();
                             switchTurn();
-                            switchPlayersTurnDOM(player.type);
+                            switchPlayersTurnDOM(player1.name);
                             toggleShipVisibility();
                             disableButtons();
                         }, 500) // Computer attacks after short delay
                     } else {
                         setTimeout(() => {
                             switchTurn();
-                            switchPlayersTurnDOM(player.type);
+                            switchPlayersTurnDOM(playerPrefix);
                             toggleShipVisibility();
                             disableButtons();
                         }, 1500) //Add longer timeout if versing another player
@@ -248,7 +264,7 @@ function initialSwitchPlayersTurnDOM() {
     playerTurnDiv.innerHTML = "";
 
     const playerTurnElement = document.createElement("div");
-    playerTurnElement.innerHTML = `Once all ships have been placed, player1 will start first.`;
+    playerTurnElement.innerHTML = `Once all ships have been placed, Player1 will start first.`;
 
     playerTurnDiv.appendChild(playerTurnElement);
 }
@@ -263,7 +279,7 @@ function updateAllShipsPlacedDOM(player) {
     allShipsPlacedDiv.innerHTML = "";
 
     const allShipsPlacedElement = document.createElement("div");
-    allShipsPlacedElement.innerHTML = `Waiting for ${player} to place all of their ships...`;
+    allShipsPlacedElement.innerHTML = `Waiting for ${player.name} to place all of their ships...`;
 
     allShipsPlacedDiv.appendChild(allShipsPlacedElement);
 }
@@ -299,4 +315,17 @@ function updateGridAfterShipPlacement(player, gridContainer) {
             cell.classList.add("ship");
         }
     });
+}
+
+function addRotateShipButton() {
+    const rotateShipButton = document.createElement("button"); 
+    rotateShipButton.setAttribute("type", "button");
+    rotateShipButton.setAttribute("id", "toggleShipOrientationSwitch");
+    rotateShipButton.textContent = "Rotate Ship";
+    
+    document.getElementById("rotateShipButtonContainer").appendChild(rotateShipButton);
+}
+
+function removeRotateShipButton() {
+    return;
 }

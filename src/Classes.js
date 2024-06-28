@@ -126,9 +126,14 @@ class Player {
         this.type = type; //Human or computer
         this.gameBoard = new Gameboard();
         this.ships = null;
+        this.name = null;
     }
 
     typeOfPlayer() {
         return this.type;
+    }
+
+    addName(name) {
+        this.name = name;
     }
 }

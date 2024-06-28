@@ -20,7 +20,8 @@ import {
     disableAllButtons,
     initialSwitchPlayersTurnDOM,
     updateAllShipsPlacedDOM,
-    clearAllShipsPlacedDOM
+    clearAllShipsPlacedDOM,
+    addRotateShipButton
 } from "./DOM"
 
 import {
@@ -102,6 +103,29 @@ document.addEventListener("DOMContentLoaded", () => {
         //Print a message about player 1 starting first after ships have been placed
         initialSwitchPlayersTurnDOM();
 
+        //Add rotate ship button
+        console.log("Placing button");
+        addRotateShipButton();
+
+        //Get player's name from the form
+        let player2Name;
+        let player1Name = document.getElementById("player1").value;
+
+        //If Player1 name left blank, auto-fill
+        if (player1Name.length === 0) {
+            player1Name = "Player 1";
+            console.log("Player 1 name left empty", player1Name);
+        }
+
+
+        if (toggleOpponent === "player2") {
+            player2Name = document.getElementById("player2").value;
+            //If Player2 name left blank, auto-fill
+            if (player2Name.length === 0) {
+                player2Name = "Player 2";
+            }
+        }
+
         //Get rid of form once game has started
         const beginGameElement = document.getElementById("beginGame");
         beginGameElement.textContent = "";
@@ -114,16 +138,29 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("player2 type initially", player2.type);
         console.log("toggleOpponent", toggleOpponent);
 
+        console.log(player1, player2);
+        
+        player1.addName(player1Name);
+        
+        if (toggleOpponent === "player2") {
+            player2.addName(player2Name);
+        } else {
+            player2.addName("Computer");
+        }
+
+        console.log(player1.name, player2.name);
+        console.log("Player's names", player1Name, player2Name);
+
         //create Grid
-        createGrid(player1, player1GridContainer, "Player1");
+        createGrid(player1, player1GridContainer, player1.name);
         
         //Check if we user is versing another player or computer
         if (player2.type === "player2"){
-            createGrid(player2, player2GridContainer, "Player2");
+            createGrid(player2, player2GridContainer, player2.name);
             console.log("Placing player 2's ships");
             createShipElements("player2ShipsContainer", player2Ships);
         } else if (player2.type === "computer") {
-            createGrid(player2, player2GridContainer, "Computer");
+            createGrid(player2, player2GridContainer, player2.name);
             console.log("Placing computer ships");
             placeComputerShips();
         }
@@ -131,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //Initially start the game off with opponent's ships toggled off
         //and disable current player's grid
         toggleShipVisibility();
+        disableAllButtons();
         
         //Allow player to add ships
         setupDragAndDrop(player1, player1GridContainer, player1Ships);
@@ -142,29 +180,34 @@ document.addEventListener("DOMContentLoaded", () => {
             disableButtons();
         }
 
+
+
+
         //Check if all ships have been placed, then switch (if vsing another player) or
         //start game
         //console.log("Checking ships removed to switch turns", allShipsRemoved);
+
+        // Set up ship orientation toggle button
+        document.getElementById('toggleShipOrientationSwitch').addEventListener("click", function() {
+            toggleCurrentOrientation = toggleCurrentOrientation === "horizontal" ? "vertical" : "horizontal";
+            console.log(toggleCurrentOrientation);
+            
+            const allShips = document.querySelectorAll(".ship");
+            if (toggleCurrentOrientation === "horizontal") {
+                allShips.forEach(ship => {
+                    ship.classList.add("horizontal");
+                    ship.classList.remove("vertical");
+                });
+            } else if (toggleCurrentOrientation === "vertical") {
+                allShips.forEach(ship => {
+                    ship.classList.add("vertical");
+                    ship.classList.remove("horizontal");
+                });
+            }
+        });
     })
     
-    // Set up ship orientation toggle button
-    document.getElementById('toggleShipOrientationSwitch').addEventListener("click", function() {
-        toggleCurrentOrientation = toggleCurrentOrientation === "horizontal" ? "vertical" : "horizontal";
-        console.log(toggleCurrentOrientation);
-        
-        const allShips = document.querySelectorAll(".ship");
-        if (toggleCurrentOrientation === "horizontal") {
-            allShips.forEach(ship => {
-                ship.classList.add("horizontal");
-                ship.classList.remove("vertical");
-            });
-        } else if (toggleCurrentOrientation === "vertical") {
-            allShips.forEach(ship => {
-                ship.classList.add("vertical");
-                ship.classList.remove("horizontal");
-            });
-        }
-    });
+
 })
 
 function getCellCoordinates(cellId) {
@@ -240,7 +283,7 @@ function setupDragAndDrop(player, gridContainer, ships) {
                     }
 
                     //Let user know they need to place their ship
-                    updateAllShipsPlacedDOM(player.type);
+                    updateAllShipsPlacedDOM(player);
                     console.log(allShipsRemoved, "checking if ships are empty");
 
                     //Remove message once all ships placed
