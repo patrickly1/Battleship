@@ -17,7 +17,10 @@ import {
     updatePlayer2FormDOM,
     switchTurn,
     switchPlayersTurnDOM,
-    disableAllButtons
+    disableAllButtons,
+    initialSwitchPlayersTurnDOM,
+    updateAllShipsPlacedDOM,
+    clearAllShipsPlacedDOM
 } from "./DOM"
 
 import {
@@ -95,6 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (document.getElementById("player1GridContainer").innerHTML !== "") {
             return;
         }
+
+        //Print a message about player 1 starting first after ships have been placed
+        initialSwitchPlayersTurnDOM();
 
         //Get rid of form once game has started
         const beginGameElement = document.getElementById("beginGame");
@@ -232,7 +238,16 @@ function setupDragAndDrop(player, gridContainer, ships) {
                             break
                         } 
                     }
+
+                    //Let user know they need to place their ship
+                    updateAllShipsPlacedDOM(player.type);
                     console.log(allShipsRemoved, "checking if ships are empty");
+
+                    //Remove message once all ships placed
+                    if (allShipsRemoved) {
+                        clearAllShipsPlacedDOM();
+                    }
+
                     
                     //Allow players to take turns placing ships
                     if (allShipsRemoved && toggleOpponent === "player2") {

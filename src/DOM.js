@@ -11,7 +11,10 @@ export {
     updatePlayer2FormDOM,
     switchTurn,
     switchPlayersTurnDOM,
-    disableAllButtons
+    disableAllButtons,
+    initialSwitchPlayersTurnDOM,
+    updateAllShipsPlacedDOM,
+    clearAllShipsPlacedDOM
 }
 
 import {
@@ -148,7 +151,8 @@ function createGrid(player, containerID, playerPrefix) {
                         console.log(player, "game over");
                     }
 
-                    if(player.type ==="computer"){
+                    //Troubleshoot why I need this function?
+                    if (player.type ==="computer"){
                         switchTurn();
                         switchPlayersTurnDOM(player.type);
                     }
@@ -239,9 +243,34 @@ function switchPlayersTurnDOM(currentPlayer) {
     playerTurnDiv.appendChild(playerTurnElement);
 }
 
+function initialSwitchPlayersTurnDOM() {
+    const playerTurnDiv = document.getElementById("switchPlayersTurn");
+    playerTurnDiv.innerHTML = "";
+
+    const playerTurnElement = document.createElement("div");
+    playerTurnElement.innerHTML = `Once all ships have been placed, player1 will start first.`;
+
+    playerTurnDiv.appendChild(playerTurnElement);
+}
+
 function switchTurn() {
     currentPlayer = currentPlayer === "player1" ? toggleOpponent : "player1";
     console.log(`${currentPlayer}'s turn`);
+}
+
+function updateAllShipsPlacedDOM(player) {
+    const allShipsPlacedDiv = document.getElementById("allShipsPlaced");
+    allShipsPlacedDiv.innerHTML = "";
+
+    const allShipsPlacedElement = document.createElement("div");
+    allShipsPlacedElement.innerHTML = `Waiting for ${player} to place all of their ships...`;
+
+    allShipsPlacedDiv.appendChild(allShipsPlacedElement);
+}
+
+function clearAllShipsPlacedDOM() {
+    const allShipsPlacedDiv = document.getElementById("allShipsPlaced");
+    allShipsPlacedDiv.innerHTML = "";
 }
 
 function updateSunkShipClass(player, sunkShip, playerPrefix) {
