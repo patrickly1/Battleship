@@ -1,29 +1,91 @@
-.Game {
-    display: flex; /* Use flexbox to arrange elements horizontally */
-}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .Game {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
 
-.player1Board, .player2Board {
-    flex: 1; /* Each player board takes up equal space */
-    margin-right: 10px; /* Add some spacing between the player boards */
-}
+  #switchPlayersTurn, #allShipsPlaced, #gameOver {
+    font-size: 20px;
+    font-weight: 300;
+    margin: 5px 0; 
+    padding: 5px 0; 
+  }
+  
 
-#player1GridContainer, #player2GridContainer {
-    display: grid; /* Use CSS grid for layout */
-    grid-template-columns: repeat(8, 50px); /* Create 8 columns, each 50px wide */
-    grid-auto-rows: 50px; /* Each row should be 50px high */
-    gap: 0; /* No gap between buttons */
-}
-
-#player1GridContainer button, #player2GridContainer button {
-    width: 50px; /* Set the width of each button */
-    height: 50px; /* Set the height of each button */
-    font-size: 16px; /* Set the font size of the button text */
-    margin: 0; /* Remove default margins */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  #player1BoardName, #player2BoardName, #computerBoardName {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 50px; 
+    margin-bottom: 10px; 
+    text-align: center;
+  }
+  
+  .player1Board, .player2Board {
+    flex: 1;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Keep boards flexed to the top */
+    flex-direction: column;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  #player1GridContainer, #player2GridContainer {
+    display: grid;
+    grid-template-columns: repeat(8, 50px);
+    grid-auto-rows: 50px;
+    gap: 0;
+  }
+  
+  #player1GridContainer button, #player2GridContainer button {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+    margin: 0;
+    box-sizing: border-box;
     background-color: lightgrey;
-}
-
-.ship {
+  }
+  
+  .shipsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  #player1ShipsContainer, #player2ShipsContainer {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  .ship {
     width: 150px;
     height: 50px;
     margin: 10px;
@@ -32,82 +94,142 @@
     text-align: center;
     line-height: 50px;
     cursor: grab;
-}
-
-.ship1.horizontal {
+  }
+  
+  .ship1.horizontal {
     width: 100px;
-    height: 50px
-}
-
-.ship2.horizontal {
+    height: 50px;
+  }
+  
+  .ship2.horizontal {
     width: 150px;
-    height: 50px
-}
-
-.ship3.horizontal {
+    height: 50px;
+  }
+  
+  .ship3.horizontal {
     width: 150px;
-    height: 50px
-}
-
-.ship4.horizontal {
+    height: 50px;
+  }
+  
+  .ship4.horizontal {
     width: 200px;
-    height: 50px
-}
-
-.ship5.horizontal {
+    height: 50px;
+  }
+  
+  .ship5.horizontal {
     width: 250px;
-    height: 50px
-}
-
-.ship1.vertical {
+    height: 50px;
+  }
+  
+  .ship1.vertical {
     width: 50px;
-    height: 100px
-}
-
-.ship2.vertical {
+    height: 100px;
+  }
+  
+  .ship2.vertical {
     width: 50px;
-    height: 150px
-}
-
-.ship3.vertical {
+    height: 150px;
+  }
+  
+  .ship3.vertical {
     width: 50px;
-    height: 150px
-}
-
-.ship4.vertical {
+    height: 150px;
+  }
+  
+  .ship4.vertical {
     width: 50px;
-    height: 200px
-}
-
-.ship5.vertical {
+    height: 200px;
+  }
+  
+  .ship5.vertical {
     width: 50px;
-    height: 250px
-}
-
-.ship.dragging {
+    height: 250px;
+  }
+  
+  .ship.dragging {
     opacity: 0.5;
-}
+  }
+  
+  /* Define styles for hit cells */
+  .hit {
+    background-color: red !important;
+  }
+  
+  /* Define styles for cells containing ships */
+  .ship {
+    background-color: blue !important;
+  }
+  
+  /* Class to hide ship locations */
+  .hide-ship {
+    background-color: lightgrey !important;
+  }
+  
+  /* Define styles for hit cells containing ships */
+  .hit-ship {
+    background-color: green !important;
+  }
+  
+  .sunk {
+    background-color: grey !important;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input[type="text"], input[type="submit"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+  }
+  
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  
+  button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #005F6B;
+  }
+  
+  a {
+    color: #008CBA;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
 
-/* Define styles for hit cells */
-.hit {
-    background-color: red !important; /* Change background color to red */
-}
-
-/* Define styles for cells containing ships */
-.ship {
-    background-color: blue !important; /* Change background color to blue */
-}
-
-/* Class to hide ship locations */
-.hide-ship {
-    background-color: lightgrey !important; /* Reset background color to initial */
-}
-
-/* Define styles for hit cells containing ships */
-.hit-ship {
-    background-color: green !important; /* Change background color to green */
-}
-
-.sunk {
-    background-color: grey !important; /* Change background color to green */
-}
+  

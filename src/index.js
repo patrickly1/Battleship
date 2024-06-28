@@ -21,7 +21,9 @@ import {
     initialSwitchPlayersTurnDOM,
     updateAllShipsPlacedDOM,
     clearAllShipsPlacedDOM,
-    addRotateShipButton
+    addRotateShipButton,
+    removeRotateShipButton,
+    updatePlayerBoardNameDOM
 } from "./DOM"
 
 import {
@@ -148,6 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
             player2.addName("Computer");
         }
 
+        updatePlayerBoardNameDOM(player1);
+        updatePlayerBoardNameDOM(player2);
+
         console.log(player1.name, player2.name);
         console.log("Player's names", player1Name, player2Name);
 
@@ -176,9 +181,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (player2.type === "player2") {
             disableAllButtons();
             setupDragAndDrop(player2, player2GridContainer, player2Ships);
-        } else {
-            disableButtons();
-        }
+        } //else {
+          //  disableButtons();
+        //}
 
 
 
@@ -291,6 +296,12 @@ function setupDragAndDrop(player, gridContainer, ships) {
                         clearAllShipsPlacedDOM();
                     }
 
+                    //Enable buttons again if all ships placed against computer
+                    if (allShipsRemoved && toggleOpponent === "computer") {
+                        disableButtons();
+                        removeRotateShipButton();
+                    }
+
                     
                     //Allow players to take turns placing ships
                     if (allShipsRemoved && toggleOpponent === "player2") {
@@ -300,6 +311,7 @@ function setupDragAndDrop(player, gridContainer, ships) {
                             toggleShipVisibility();
                             if (player.type === "player2") {
                                 disableButtons();
+                                removeRotateShipButton();
                             } else {
                                 disableAllButtons();
                             }

@@ -15,7 +15,9 @@ export {
     initialSwitchPlayersTurnDOM,
     updateAllShipsPlacedDOM,
     clearAllShipsPlacedDOM,
-    addRotateShipButton
+    addRotateShipButton,
+    removeRotateShipButton,
+    updatePlayerBoardNameDOM
 }
 
 import {
@@ -327,5 +329,14 @@ function addRotateShipButton() {
 }
 
 function removeRotateShipButton() {
-    return;
+    document.getElementById("rotateShipButtonContainer").innerHTML = "";
+}
+
+function updatePlayerBoardNameDOM(player) {
+    if (player.type === "computer") {
+        document.getElementById(`player2BoardName`).innerHTML = `${player.name}'s Board`;
+    } else {
+        document.getElementById(`${player.type}BoardName`).innerHTML = `${player.name}'s Board`;
+    }
+
 }
