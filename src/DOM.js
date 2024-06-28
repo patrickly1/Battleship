@@ -148,6 +148,11 @@ function createGrid(player, containerID, playerPrefix) {
                         console.log(player, "game over");
                     }
 
+                    if(player.type ==="computer"){
+                        switchTurn();
+                        switchPlayersTurnDOM(player.type);
+                    }
+
                     if (player.type === "computer") {
                         setTimeout(() => { 
                             computerTurntoAttack();

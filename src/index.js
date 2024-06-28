@@ -125,13 +125,15 @@ document.addEventListener("DOMContentLoaded", () => {
         //Initially start the game off with opponent's ships toggled off
         //and disable current player's grid
         toggleShipVisibility();
-        disableAllButtons();
-
+        
         //Allow player to add ships
         setupDragAndDrop(player1, player1GridContainer, player1Ships);
         
         if (player2.type === "player2") {
+            disableAllButtons();
             setupDragAndDrop(player2, player2GridContainer, player2Ships);
+        } else {
+            disableButtons();
         }
 
         //Check if all ships have been placed, then switch (if vsing another player) or
